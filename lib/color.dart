@@ -1,5 +1,19 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+class AppColors {
+  static const Color primary = Color(0xFFCCFFB2); // Main 500
+  static const Color accent  = Color(0xFF00C97F); // 임의 accent
+}
+final _appTheme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+  textTheme: const TextTheme(
+    titleLarge: TextStyle(fontWeight: FontWeight.bold),
+    labelLarge: TextStyle(fontWeight: FontWeight.w600),
+  ),
+);
 class ColorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
