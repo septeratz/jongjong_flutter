@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-class Collectioncalscreen extends StatelessWidget {
+class CollectionCalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(

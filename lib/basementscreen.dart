@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class Basementscreen extends StatelessWidget {
+class BasementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.all(16),
       children: [
         Container(
           width: 393,
@@ -459,17 +462,23 @@ class Basementscreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 spacing: 4,
                                 children: [
-                                  SizedBox(
-                                    width: 205,
-                                    child: Text(
-                                      '수거 신청',
-                                      style: TextStyle(
-                                        color: const Color(0xFF111111) /* black */,
-                                        fontSize: 20,
-                                        fontFamily: 'Gmarket Sans TTF',
-                                        fontWeight: FontWeight.w700,
-                                        height: 1.40,
-                                        letterSpacing: -0.50,
+                                  GestureDetector(
+                                    onTap: () {
+                                      // "수거 신청" 카드 탭 -> CollectionAddScreen 이동
+                                      context.push('/add');
+                                    },
+                                    child: SizedBox(
+                                      width: 205,
+                                      child: Text(
+                                        '수거 신청',
+                                        style: TextStyle(
+                                          color: const Color(0xFF111111) /* black */,
+                                          fontSize: 20,
+                                          fontFamily: 'Gmarket Sans TTF',
+                                          fontWeight: FontWeight.w700,
+                                          height: 1.40,
+                                          letterSpacing: -0.50,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -703,6 +712,7 @@ class Basementscreen extends StatelessWidget {
           ),
         ),
       ],
+    ),
     );
   }
 }

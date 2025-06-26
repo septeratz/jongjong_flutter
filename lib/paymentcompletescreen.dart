@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Paymentcompletescreen extends StatelessWidget {
+class PaymentCompleteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -1,122 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'color.dart';                    // AppColors 등의 테마 색상 로드
+import 'loginscreen.dart';
+import 'basementscreen.dart';
+import 'collectionaddscreen.dart';
+import 'collectionpurchasescreen.dart';
+import 'collectioncalscreen.dart';
+import 'paymentongoingscreen.dart';
+import 'paymentcompletescreen.dart';
+
+// 1. Provider 상태 클래스 - 수거 품목 수량 및 금액 관리
+class OrderProvider extends ChangeNotifier {
+  int generalCount = 0;  // 종량제 봉투 개수
+  int recycleCount = 0;  // 재활용 봉투 개수
+  int foodCount = 0;     // 음식물 봉투 개수
+
+  int get totalPrice => generalCount * 990 + recycleCount * 990 + foodCount * 990;
+
+  void incrementGeneral() {
+    generalCount++;
+    notifyListeners();
+  }
+  void decrementGeneral() {
+    if (generalCount > 0) {
+      generalCount--;
+      notifyListeners();
+    }
+  }
+  // recycleCount, foodCount에 대해서도 increment/decrement 메서드 구현 (생략)
+  void resetAll() {
+    generalCount = recycleCount = foodCount = 0;
+    notifyListeners();
+  }
+}
+
+// 2. GoRouter 라우터 설정 - 이름별 경로와 연결된 화면 정의
+final _router = GoRouter(
+  initialLocation: '/',  // 앱 시작 시 LoginScreen 표시
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => LoginScreen(),
+    ),
+    GoRoute(
+      path: '/basement',
+      builder: (context, state) => BasementScreen(),
+    ),
+    GoRoute(
+      path: '/add',
+      builder: (context, state) => CollectionAddScreen(),
+    ),
+    GoRoute(
+      path: '/purchase',
+      builder: (context, state) => CollectionPurchaseScreen(),
+    ),
+    GoRoute(
+      path: '/calendar',
+      builder: (context, state) => CollectionCalScreen(),
+    ),
+    GoRoute(
+      path: '/payment/ongoing',
+      builder: (context, state) => PaymentOngoingScreen(),
+    ),
+    GoRoute(
+      path: '/payment/complete',
+      builder: (context, state) => PaymentCompleteScreen(),
+    ),
+  ],
+);
 
 void main() {
-  runApp(const MyApp());
+  // OrderProvider 주입 및 MaterialApp.router 구성
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => OrderProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    // color.dart의 AppColors.primary 등을 활용한 ThemeData 적용
+    final ThemeData appTheme = ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(fontWeight: FontWeight.bold),
+        labelLarge: TextStyle(fontWeight: FontWeight.w600),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(AppColors.accent),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      fontFamily: 'Pretendard',  // 기본 폰트 패밀리 설정 (예시)
+    );
+    return MaterialApp.router(
+      title: 'JongJong App',
+      theme: appTheme,
+      routerConfig: _router,
     );
   }
 }

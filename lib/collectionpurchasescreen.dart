@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Collectionpurchasescreen extends StatelessWidget {
+class CollectionPurchaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(

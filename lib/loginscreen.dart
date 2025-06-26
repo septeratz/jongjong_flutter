@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class Loginscreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      body: Stack(
       children: [
         Container(
           width: 393,
@@ -314,45 +316,49 @@ class Loginscreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: 10,
                           children: [
-                            Container(
-                              width: 335,
-                              height: 56,
+                            ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(335, 56),
                               padding: const EdgeInsets.symmetric(horizontal: 131, vertical: 16),
-                              decoration: ShapeDecoration(
-                                color: const Color(0xFFF7E317),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                              backgroundColor: const Color(0xFFF7E317),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 8,
-                                children: [
-                                  Container(width: 24, height: 24),
-                                  Container(
-                                    width: 18.97,
-                                    height: 16,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: BoxDecoration(),
-                                    child: Stack(),
-                                  ),
-                                  Text(
-                                    '카카오 계정으로 로그인',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'Gmarket Sans TTF',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                      letterSpacing: -0.40,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              elevation: 0,
                             ),
+                            onPressed: () {
+                              // TODO: Implement Kakao login logic here
+                              // 로그인 성공 시 BasementScreen으로 이동
+                              context.go('/basement');
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(width: 24, height: 24),
+                                Container(
+                                  width: 18.97,
+                                  height: 16,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(),
+                                  child: Stack(),
+                                ),
+                                Text(
+                                  '카카오 계정으로 로그인',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'Gmarket Sans TTF',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                    letterSpacing: -0.40,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                             Container(
                               width: 335,
                               height: 52,
@@ -462,6 +468,7 @@ class Loginscreen extends StatelessWidget {
           ),
         ),
       ],
+    ),
     );
   }
 }
